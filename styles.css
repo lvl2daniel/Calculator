@@ -47,6 +47,9 @@ button {
     padding-left: 12px;
     padding-right: 12px;
     padding-bottom: 6px;
+    min-width: 250px;    
+    display: flex;
+    justify-content: flex-end;  
 }
 
 button:hover {
