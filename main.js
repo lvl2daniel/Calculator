@@ -34,15 +34,27 @@ function operate(operator, a, b)
 function populateDisplay(displayNo)
 {
     //broken right now
-    const container = document.getElementById('calcContainer');
-    console.log(container);
-    const display = container.getElementById('display');
-    console.log(display);
+    const display = document.querySelector("#display");
+    display.textContent = displayNo;
+    console.log(display.textContent);
 }
 
 //testing 4 function
+populateDisplay(0);
+
+
+
+let firstNumber;
+
+const buttons = document.getElementsByTagName('button');
 let i = 0;
-for (i = 0; i < 3; i++)
-{
-    populateDisplay(3);
-}
+for (i = 0; i<buttons.length; i++)
+    {
+        buttons[i].addEventListener("click", (event) => {
+            if (buttons[i].textContent.isInteger() !== true)
+            {
+                
+            }
+
+        })
+    }
