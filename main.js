@@ -50,7 +50,7 @@ let last = 0;
 let curr;
 let currentOp;
 let stored;
-let isOperating;
+let isOperating = false;
 let input;
 for (i = 0; i<buttons.length; i++)
     {
@@ -71,51 +71,11 @@ for (i = 0; i<buttons.length; i++)
 
 function calculate(currNo, lastNo, operating)
 {
-    if (currNo === '=' && !operating)
-        return lastNo;
-    else if (Number.isInteger(currNo))
-    {
-
-        let ret = ("" + lastNo + currNo); // Makes string to create new number
-        last = parseInt(ret); //Sets last number equal to the string
-        console.log("lastNo = " + lastNo);
-        console.log("currNo = " + currNo);
-        return ret; //Returns the new string
-
-    }
-    else if (!Number.isInteger(currNo) && !currentOp)
-    {
-        stored = parseInt(lastNo);
-        last = 0;
-        currentOp = currNo.toString();
-        isOperating = true;
-        console.log("Stored Number : " + stored);
-        console.log("Current is " + currentOp)
-        console.log("");
-        console.log("First input of X ^^")
-        console.log("");
-        return 'X';
-    }
-    else if (!Number.isInteger(currNo) && currentOp && isOperating)
-    {
-        last = operate(currentOp, lastNo, stored);
-        console.log("Stored number is " + stored);
-        stored = 0;
-        currentOp = currNo;
-        if(currNo === '=')
-        {
-            isOperating = false;
-            return last;
-        }
-        (console.log(currentOp));
-        console.log("Is it operating? " + isOperating);
-        console.log("")
-        console.log("")
-        console.log("Operating Function Ran ^");
-        console.log("");
-        console.log("");
-        return currentOp;
-    }
 
 
+}
+
+function concat(a, b)
+{
+    return ("" + a + b);
 }
