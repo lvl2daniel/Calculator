@@ -21,25 +21,45 @@ function divide(a, b)
 
 function operate(operator, a, b)
 {
-    if (operator === '%')
-        return divide(a,b);
-    else if(operator === 'X')
-        return multiply(a,b);
-    else if(operator === '+')
-        return add(a,b);
-    else if(operator === '-')
-        return subtract(a,b);
-    else if(operator === null)
+    if (operator === '/')
+        if (divide(a,b) == divide(a,b).toFixed(4))
+            return divide(a,b);
+        else
+            return divide(a,b).toFixed(4);
+    else if (operator === 'X')
+        if (multiply(a,b) == multiply(a,b).toFixed(4))
+            return multiply(a,b);
+        else
+            return multiply(a,b).toFixed(4);
+    else if (operator === '+')
+        if (add(a,b) == add(a,b).toFixed(4))
+            return add(a,b);
+        else
+            return add(a,b).toFixed(4);
+    else if (operator === '-')
+        if (subtract(a,b) == subtract(a,b).toFixed(4))
+            return subtract(a,b);
+        else
+            return subtract(a,b).toFixed(4);
+    else if (operator === null)
         return 'Error';
 }
 
 function populateDisplay(displayNo)
 {
     const display = document.querySelector("#display");
-    display.textContent = displayNo;
+    if (displayNo.length <= 16 || displayNo <= 10000000000000000)
+        display.textContent = displayNo;
+    else
+    {
+        display.textContent = 'ERROR';
+        last = '';
+        currentOp = null;
+        stored = 0;
+        isOperating = false;
+    }
 }
 
-//testing 4 function
 populateDisplay(0);
 
 
@@ -47,8 +67,8 @@ populateDisplay(0);
 let firstNumber;
 const container = document.querySelector('#calcContainer')
 const buttons = container.getElementsByClassName("btn");
-let last = 0;
-let curr;
+let last = '';
+let justEvaluated = false;
 let currentOp;
 let stored;
 let isOperating = false;
@@ -72,31 +92,28 @@ for (let i = 0; i<buttons.length; i++)
 
 function calculate(currNo, lastNo, operating)
 {
-    //vvvvv What's left for this function vvvvv
-    //      Need to round decimal to 2 places ONLY IF its too long.
-    //      Need to clear number on button press if operation already happened
-    //      Need to clear the 0 appended to the start of the calculator.
     if (currNo === 'C')
     {
-        last = 0;
+        last = '';
         currentOp = 0;
         stored = 0;
         isOperating = false;
         return 0;
     }
-    else if ((currNo === 'X') || (currNo ==='%') || (currNo ==='-')  || (currNo ==='+'))
+    else if ((currNo === 'X') || (currNo ==='/') || (currNo ==='-')  || (currNo ==='+'))
     {
+        justEvaluated = false;
         if (operating === true)
         {
-            stored = operate(currentOp, parseInt(stored), parseInt(lastNo));
+            stored = operate(currentOp, parseFloat(stored), parseFloat(lastNo));
             currentOp = currNo;
-            last = 0;
+            last = '';
             return stored;
         }
         else if (operating === false)
         {
             stored = last;
-            last = 0;
+            last = '';
             isOperating = true;
             currentOp = currNo;
             return currNo;
@@ -106,20 +123,21 @@ function calculate(currNo, lastNo, operating)
     {
         if (operating === false)
         {
-            last = 0;
+            last = '';
             stored = 0;
             currentOp = null;
             return 'Error'
         }
         last = operate(currentOp, parseFloat(stored), parseFloat(lastNo))
         isOperating = false;
+        justEvaluated = true;
         return last;
     }
-    else if (currNo === '.')
+    else if (currNo === '.' && justEvaluated === false)
     {
-        if (parseFloat(last) % 1 != 0)
+        if (parseFloat(last + 10) % 1 != 0)
         {
-            last = 0;
+            last = '';
             stored = 0;
             currentOp = null;
             return 'Error'
@@ -129,6 +147,17 @@ function calculate(currNo, lastNo, operating)
             last = concat(lastNo, currNo)
             return last;
         }
+    }
+    else if (justEvaluated === true)
+    {
+        last = '';
+        currentOp = 0;
+        stored = 0;
+        isOperating = false;
+        lastNo = '';
+        justEvaluated = false;
+        last = currNo;
+        return last;
     }
     else
     {
